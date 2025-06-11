@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product, ProductDocument } from './schemas/product.schema';
@@ -8,34 +8,53 @@ import { UpdateProductDto } from './dto/update-product.dto';
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectModel(Product.name) private productModel: Model<ProductDocument>,
+    @InjectModel(Product.name)
+    private productModel: Model<ProductDocument>,
   ) {}
 
-  async create(dto: CreateProductDto, imageUrl: string): Promise<Product> {
-    const product = new this.productModel({ ...dto, imageUrl });
-    return product.save();
+  async create(dto: CreateProductDto, imageUrls: string[]) {
+    const created = new this.productModel({ ...dto, images: imageUrls });
+    return created.save();
   }
 
-  async findAll(): Promise<Product[]> {
-    return this.productModel.find().exec();
+  async findAll() {
+    return this.productModel.find();
   }
 
-  async findOne(id: string): Promise<Product> {
-    const product = await this.productModel.findById(id).exec();
-    if (!product) throw new NotFoundException('Product not found');
-    return product;
+  async findOne(id: string) {
+    return this.productModel.findById(id);
   }
 
-  async update(id: string, dto: UpdateProductDto): Promise<Product> {
-    const updated = await this.productModel
-      .findByIdAndUpdate(id, dto, { new: true })
-      .exec();
-    if (!updated) throw new NotFoundException('Product not found');
-    return updated;
+  async update(id: string, dto: UpdateProductDto) {
+    return this.productModel.findByIdAndUpdate(id, dto, { new: true });
   }
 
-  async remove(id: string): Promise<void> {
-    const deleted = await this.productModel.findByIdAndDelete(id).exec();
-    if (!deleted) throw new NotFoundException('Product not found');
+  async remove(id: string) {
+    return this.productModel.findByIdAndDelete(id);
   }
+  async filter(query: {
+  name?: string;
+  fromDate?: string;
+  toDate?: string;
+  inStock?: string;
+}) {
+  const filter: any = {};
+
+  if (query.name) {
+    filter.name = { $regex: query.name, $options: 'i' };
+  }
+
+  if (query.fromDate || query.toDate) {
+    const createdAtFilter: any = {};
+    if (query.fromDate) createdAtFilter.$gte = new Date(query.fromDate);
+    if (query.toDate) createdAtFilter.$lte = new Date(query.toDate);
+    filter.createdAt = createdAtFilter;
+  }
+
+  if (query.inStock === 'true') {
+    filter.stock = { $gt: 0 };
+  }
+
+  return this.productModel.find(filter);
+} 
 }

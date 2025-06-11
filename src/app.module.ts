@@ -1,9 +1,16 @@
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { ProtectedController } from './protected/protected.controller';
 import { ProductsModule } from './products/products.module';
+import { ProtectedController } from './protected/protected.controller';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
+
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/nest-auth-db'),
@@ -13,4 +20,16 @@ import { ProductsModule } from './products/products.module';
   ],
   controllers: [ProtectedController],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+
+      .forRoutes(
+        { path: 'auth/login', method: RequestMethod.POST },
+        { path: 'auth/register', method: RequestMethod.POST },
+        { path: 'products', method: RequestMethod.GET },
+        { path: 'products/:id', method: RequestMethod.ALL },
+      );
+  }
+}
