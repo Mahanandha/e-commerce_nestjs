@@ -79,5 +79,4 @@ export class ProductsController {
   async remove(@Param('id') id: string) {
     return this.productsService.remove(id);
   }
-  
 }
