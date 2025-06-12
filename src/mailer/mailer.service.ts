@@ -23,6 +23,7 @@ export class MailerService {
       } else {
         console.log('Server is ready to send emails');
       }
+      console.log(success);
     });
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { Product, ProductDocument } from './schemas/product.schema';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -41,7 +41,7 @@ export class ProductsService {
   }
 
   async filter(query: ProductFilterQuery) {
-    const filter: Record<string, any> = {};
+    const filter: FilterQuery<ProductDocument> = {};
 
     if (query.name) {
       filter.name = { $regex: query.name, $options: 'i' };

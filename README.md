@@ -34,6 +34,8 @@ $ npm run test:cov
 # for register and login
 
 first register then check login
+
+```bash
 @register
 post method http://localhost:3000/auth/register
 
@@ -45,10 +47,13 @@ same json for both register and login
 
 @login
 post method http://localhost:3000/auth/login
+```
 
 # for mail
 
 post method http://localhost:3000/mail/send
+
+```bash
 json:
 {
 "to": "mahanandhanait@gmail.com",
@@ -65,6 +70,7 @@ json:
 }
 ]
 }
+```
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
