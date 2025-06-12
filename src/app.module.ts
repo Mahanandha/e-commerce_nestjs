@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { ProtectedController } from './protected/protected.controller';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     AuthModule,
     UsersModule,
     ProductsModule,
+    MailerModule,
   ],
   controllers: [ProtectedController],
 })
