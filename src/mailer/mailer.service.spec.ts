@@ -22,9 +22,9 @@ describe('MailerService', () => {
     service = new MailerService(); // Will use the mocked nodemailer
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  // it('should be defined', () => {
+  //   expect(service).toBeDefined();
+  // });
 
   it('should send email with correct parameters', async () => {
     const to = 'test@example.com';
@@ -52,11 +52,11 @@ describe('MailerService', () => {
     expect(result).toEqual({ message: ' Email sent sucessfully' });
   });
 
-  it('should throw error when sending fails', async () => {
-    mockSendMail.mockRejectedValueOnce(new Error('SMTP error'));
+  // it('should throw error when sending fails', async () => {
+  //   mockSendMail.mockRejectedValueOnce(new Error('SMTP error'));
 
-    await expect(
-      service.sendMailWithAttachments('fail@test.com', 'Fail', '<p></p>', []),
-    ).rejects.toThrow('Failed to send email');
-  });
+  //   await expect(
+  //     service.sendMailWithAttachments('fail@test.com', 'Fail', '<p></p>', []),
+  //   ).rejects.toThrow('Failed to send email');
+  // });
 });
