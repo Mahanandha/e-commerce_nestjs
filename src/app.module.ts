@@ -11,7 +11,7 @@ import { ProductsModule } from './products/products.module';
 import { ProtectedController } from './protected/protected.controller';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { MailerModule } from './mailer/mailer.module';
-
+import { CronJobsModule } from './cronjobs/cron.module';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/nest-auth-db'),
@@ -19,6 +19,7 @@ import { MailerModule } from './mailer/mailer.module';
     UsersModule,
     ProductsModule,
     MailerModule,
+    CronJobsModule,
   ],
   controllers: [ProtectedController],
 })

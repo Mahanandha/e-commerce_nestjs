@@ -34,7 +34,7 @@ export class MailerService {
   ) {
     try {
       const info = await this.transporter.sendMail({
-        from: 'vasanth12ait@gmail.com',
+        from: 'mahanandhanait@gmail.com',
         to,
         subject,
         html,
