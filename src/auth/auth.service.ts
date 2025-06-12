@@ -10,11 +10,15 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(email: string, password: string) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await this.usersService.create(email, hashedPassword);
-    return { message: 'User registered', userId: user._id };
-  }
+ async register(email: string, password: string) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await this.usersService.create(email, hashedPassword);
+  const payload = { email: user.email, sub: user._id };
+  const token = this.jwtService.sign(payload);
+
+  return { access_token: token };
+}
+
 
   async login(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);
