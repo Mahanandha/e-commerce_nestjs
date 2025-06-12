@@ -3,13 +3,24 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 
-async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+class AppBootstrap {
+  async initializeApp() {
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
+    this.configureStaticAssets(app);
+    await this.listen(app);
+  }
 
-  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
-    prefix: '/uploads/',
-  });
+  private configureStaticAssets(app: NestExpressApplication) {
+    app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+      prefix: '/uploads/',
+    });
+  }
 
-  await app.listen(process.env.PORT ?? 3000);
+  private async listen(app: NestExpressApplication) {
+    const port = process.env.PORT ?? 3000;
+    await app.listen(port);
+    console.log(`Server running on http://localhost:${port}`);
+  }
 }
-bootstrap();
+
+new AppBootstrap().initializeApp();

@@ -1,18 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 
-describe('UsersService', () => {
-  let service: UsersService;
+class UsersServiceTestSuite {
+  service: UsersService;
 
-  beforeEach(async () => {
+  async setup() {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UsersService],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    this.service = module.get<UsersService>(UsersService);
+  }
+
+  testIsDefined() {
+    it('should be defined', () => {
+      expect(this.service).toBeDefined();
+    });
+  }
+}
+
+describe('UsersService (OOP)', () => {
+  const suite = new UsersServiceTestSuite();
+
+  beforeEach(async () => {
+    await suite.setup();
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  suite.testIsDefined();
 });

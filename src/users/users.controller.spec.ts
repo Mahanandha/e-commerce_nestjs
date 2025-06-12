@@ -1,18 +1,32 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 
-describe('UsersController', () => {
-  let controller: UsersController;
+class UsersControllerTestSuite {
+  controller: UsersController;
 
-  beforeEach(async () => {
+  constructor() {}
+
+  async setup() {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
     }).compile();
 
-    controller = module.get<UsersController>(UsersController);
+    this.controller = module.get<UsersController>(UsersController);
+  }
+
+  testIsDefined() {
+    it('should be defined', () => {
+      expect(this.controller).toBeDefined();
+    });
+  }
+}
+
+describe('UsersController (OOP)', () => {
+  const suite = new UsersControllerTestSuite();
+
+  beforeEach(async () => {
+    await suite.setup();
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+  suite.testIsDefined();
 });

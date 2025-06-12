@@ -3,7 +3,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('protected')
 export class ProtectedController {
-  // Protect this route with JWT guard
   @UseGuards(JwtAuthGuard)
   @Get()
   getProtected(@Request() req) {
