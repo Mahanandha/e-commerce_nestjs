@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import React from "react";
+
 import { fetchProducts, deleteProduct } from "../api/productApi";
 
 export default function ProductList() {

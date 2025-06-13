@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Container, TextField, Button, Typography, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 import axios from "../api/axios";
 import { RegisterData } from "../types/auth";
-import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [form, setForm] = useState<RegisterData>({

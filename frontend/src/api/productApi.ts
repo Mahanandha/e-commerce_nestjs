@@ -1,3 +1,4 @@
+
 import axios from "./axios";
 
 export const fetchProducts = (filters = {}) =>
@@ -8,7 +9,7 @@ export const createProductWithImage = (formData: FormData) =>
     headers: { "Content-Type": "multipart/form-data" },
   });
 
-export const updateProduct = (id: string, data: any) =>
+export const updateProduct = (id: string, data: unknown) =>
   axios.patch(`/products/${id}`, data); // PATCH for edit
 
 export const deleteProduct = (id: string) => axios.delete(`/products/${id}`);
