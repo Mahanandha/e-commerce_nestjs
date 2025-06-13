@@ -9,25 +9,23 @@ describe("ProductList component", () => {
 
   it("should display products", () => {
     cy.get(".MuiCard-root").should("have.length.at.least", 1);
-  });
+ });
+it("should filter products by name", () => {
+  cy.get('input').eq(0).type("Nail Cutter");
+  cy.get(".MuiCard-root")
+    .eq(0)
+    .find(".MuiTypography-h6")
+    .should("contain", "Nail Cutter");
+});
 
-  it("should filter products by name", () => {
-    cy.get('input[label="Filter by Name"]').type("Product 1");
-    cy.get(".MuiCard-root")
-      .eq(0)
-      .find(".MuiTypography-h6")
-      .should("contain", "Product 1");
-  });
-
-  it("should filter products by price", () => {
-    cy.get('input[label="Filter by Price"]').type("10");
-    cy.get(".MuiCard-root")
-      .eq(0)
-      .find(".MuiTypography-body2")
-      .contains("Price:")
-      .should("contain", "10");
-  });
-
+it("should filter products by price", () => {
+  cy.get('input').eq(1).type("50");
+  cy.get(".MuiCard-root")
+    .eq(0)
+    .find(".MuiTypography-body2")
+    .contains("Price:")
+    .should("contain", "50");
+});
   it("should navigate to create product page", () => {
     cy.get("button").contains("+ Create Product").click();
     cy.url().should("include", "/products/create");

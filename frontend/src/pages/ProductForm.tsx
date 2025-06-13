@@ -106,6 +106,7 @@ export default function ProductForm() {
           type="number"
           fullWidth
           margin="normal"
+          
           value={form.price}
           onChange={handleChange}
           required
