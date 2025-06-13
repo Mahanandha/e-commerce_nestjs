@@ -6,6 +6,8 @@ import {
   CardMedia,
   CardContent,
   CardActions,
+  TextField,
+  Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -13,8 +15,8 @@ import { fetchProducts, deleteProduct } from "../api/productApi";
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
+  const [filters, setFilters] = useState({ name: "", price: "" });
   const navigate = useNavigate();
-  const BACKEND_URL = "http://localhost:3000"; 
 
   const loadProducts = async () => {
     try {
@@ -36,43 +38,74 @@ export default function ProductList() {
     }
   };
 
+  const filteredProducts = products.filter((prod: any) => {
+    const nameMatch = prod.name
+      .toLowerCase()
+      .includes(filters.name.toLowerCase());
+    const priceMatch =
+      filters.price === "" || prod.price <= Number(filters.price);
+    return nameMatch && priceMatch;
+  });
+
   return (
     <Container sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
         Product List
       </Typography>
 
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{ mb: 3 }}
-        onClick={() => navigate("/products/create")}
+      {/* Filters and Create Button */}
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        alignItems="center"
+        gap={2}
+        mb={3}
+        justifyContent="space-between"
       >
-        + Create Product
-      </Button>
+        <Box display="flex" gap={2} flexWrap="wrap">
+          <TextField
+            label="Filter by Name"
+            size="small"
+            value={filters.name}
+            onChange={(e) =>
+              setFilters({ ...filters, name: e.target.value })
+            }
+          />
+          <TextField
+            label="Filter by Price"
+            size="small"
+            type="number"
+            value={filters.price}
+            onChange={(e) =>
+              setFilters({ ...filters, price: e.target.value })
+            }
+          />
+        </Box>
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "16px",
-        }}
-      >
-        {products.map((prod: any) => (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate("/products/create")}
+        >
+          + Create Product
+        </Button>
+      </Box>
+
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+        {filteredProducts.map((prod: any) => (
           <div key={prod._id} style={{ width: "250px" }}>
             <Card>
               {prod.images?.[0] && (
                 <CardMedia
-  component="img"
-  height="140"
-  image={
-    prod.images?.[0]?.startsWith("http")
-      ? prod.images[0]
-      : `${BACKEND_URL}${prod.images[0]}`
-  }
-  alt={prod.name}
-/>
-
+                  component="img"
+                  height="140"
+                  image={
+                    prod.images[0].startsWith("http")
+                      ? prod.images[0]
+                      : `http://localhost:3000${prod.images[0]}`
+                  }
+                  alt={prod.name}
+                />
               )}
               <CardContent>
                 <Typography variant="h6">{prod.name}</Typography>
@@ -80,7 +113,7 @@ export default function ProductList() {
                   {prod.description}
                 </Typography>
                 <Typography variant="body2">Stock: {prod.stock}</Typography>
-                  <Typography variant="body2">Price: ₹{prod.price}</Typography> 
+                <Typography variant="body2">Price: ₹{prod.price}</Typography>
               </CardContent>
               <CardActions>
                 <Button
