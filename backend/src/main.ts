@@ -6,6 +6,11 @@ import { join } from 'path';
 class AppBootstrap {
   async initializeApp() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
+    app.enableCors({
+      origin: 'http://localhost:3001', 
+      credentials: true,
+    });
+
     this.configureStaticAssets(app);
     await this.listen(app);
   }
