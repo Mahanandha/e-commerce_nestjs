@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import axios from '../api/axios'; 
+import axios from "../api/axios";
 
 interface Product {
   _id: string;
@@ -25,23 +25,29 @@ const initialState: ProductState = {
 };
 
 export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
-  async (params: { page: number; limit: number; search?: string; sortBy?: string; sortOrder?: string }) => {
-    const res = await axios.get('http://localhost:3000/products', { params });
+  "products/fetchProducts",
+  async (params: {
+    page: number;
+    limit: number;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  }) => {
+    const res = await axios.get("http://localhost:3000/products", { params });
     return res.data;
-  }
+  },
 );
 
 export const deleteProduct = createAsyncThunk(
-  'products/deleteProduct',
+  "products/deleteProduct",
   async (id: string) => {
     await axios.delete(`http://localhost:3000/products/${id}`);
     return id;
-  }
+  },
 );
 
 const productSlice = createSlice({
-  name: 'products',
+  name: "products",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -57,7 +63,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch products';
+        state.error = action.error.message || "Failed to fetch products";
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.products = state.products.filter((p) => p._id !== action.payload);

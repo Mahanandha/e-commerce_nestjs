@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Container, TextField, Button, Typography, Box } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { AuthCredentials } from "../types/auth";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [form, setForm] = useState<AuthCredentials>({
     email: "",
     password: "",
   });
+ 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,6 +21,7 @@ export default function Login() {
       const { data } = await axios.post("/auth/login", form);
       localStorage.setItem("token", data.access_token);
       alert("Login successful!");
+      navigate("/products");
     } catch (err) {
       alert("Login failed.");
     }

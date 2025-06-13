@@ -69,18 +69,14 @@ export default function ProductList() {
             label="Filter by Name"
             size="small"
             value={filters.name}
-            onChange={(e) =>
-              setFilters({ ...filters, name: e.target.value })
-            }
+            onChange={(e) => setFilters({ ...filters, name: e.target.value })}
           />
           <TextField
             label="Filter by Price"
             size="small"
             type="number"
             value={filters.price}
-            onChange={(e) =>
-              setFilters({ ...filters, price: e.target.value })
-            }
+            onChange={(e) => setFilters({ ...filters, price: e.target.value })}
           />
         </Box>
 

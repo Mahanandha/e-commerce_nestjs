@@ -16,7 +16,6 @@ function App() {
         <Route path="/products/new" element={<ProductForm />} />
         <Route path="/products/edit/:id" element={<ProductForm />} />
         <Route path="/products/create" element={<ProductForm />} />
-        
       </Routes>
     </BrowserRouter>
   );
